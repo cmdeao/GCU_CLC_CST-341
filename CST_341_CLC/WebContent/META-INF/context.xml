@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+   <Resource name="jdbc/SampleDB" auth="Container"
+       type="javax.sql.DataSource" 
+       username="user" password="clcmusic"
+       driverClassName="org.apache.derby.jdbc.ClientDriver"
+       url="jdbc:derby://localhost:1527/MusicManagementCLC" 
+       maxActive="8"    /> 
+</Context> 
