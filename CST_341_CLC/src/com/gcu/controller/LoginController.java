@@ -4,7 +4,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gcu.model.Login;
+
 import java.sql.Connection;
 
 @Controller
 @RequestMapping("/user")
-public class LoginController {
-
+public class LoginController 
+{	
 	@RequestMapping(path = "/login", method = RequestMethod.GET)
 	public ModelAndView displayLogin()
 	{
@@ -31,12 +31,6 @@ public class LoginController {
 	public String loggedApplication(@ModelAttribute("user") @Validated Login login, BindingResult binding, Model model)
 	{
 		String returnPage = null;
-		model.addAttribute("login", login.getPassword());
-		if(binding.hasErrors())
-		{
-			returnPage = "login";
-			return returnPage;
-		}
 		try {
 			Class.forName("org.apache.derby.jdbc.ClientDriver");
 		}catch(ClassNotFoundException e){
@@ -45,6 +39,14 @@ public class LoginController {
 		String url = "jdbc:derby://localhost:1527/MusicManagementCLC";
 		String uName = "user";
 		String password = "clcmusic";
+		String inputUser = login.getUsername();
+		String inputPass = login.getPassword();
+		if(inputUser.isEmpty() || inputPass.isEmpty())
+		{
+			System.out.println("NOTHING IN A FIELD");
+			returnPage = "login";
+			return returnPage;
+		}
 		try {
 			Connection conn = DriverManager.getConnection(url, uName, password);
 			System.out.println("Login Connection Was Successful");
@@ -53,11 +55,15 @@ public class LoginController {
 			ResultSet rs = st.executeQuery(query);
 			while(rs.next())
 			{
-				String userName = login.getUsername();
-				String userPassword = login.getPassword();
-				if(rs.getString("username").equals(userName) && rs.getString("password").equals(userPassword))
+				if(rs.getString("username").equals(inputUser) && rs.getString("password").equals(inputPass))
 				{
+					System.out.println("We have a match!");
 					returnPage = "main";
+				}
+				else
+				{
+					System.out.println("FAILED LOGIN");
+					returnPage = "login";
 				}
 			}
 		}catch(SQLException e){
