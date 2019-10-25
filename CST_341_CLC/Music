@@ -1,0 +1,7 @@
+CREATE TABLE APP.music(
+	songName VARCHAR(50),
+	artistName VARCHAR(50),
+	albumName VARCHAR(50),
+	songLength float PRIMARY KEY,
+	songGenre VARCHAR(50)
+);
