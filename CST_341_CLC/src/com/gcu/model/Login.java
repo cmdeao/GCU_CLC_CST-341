@@ -1,19 +1,39 @@
 package com.gcu.model;
 
-public class Login {
+import com.gcu.business.LoginInterface;
 
-	private String username;
-	public String getUsername() {
-		return username;
+public class Login implements LoginInterface{
+
+	private String username = null;
+	private String password = null;
+	
+	public void init()
+	{
+		System.out.println("LOGIN INIT METHOD");
 	}
-	public void setUsername(String username) {
+	
+	public void destroy()
+	{
+		System.out.println("LOGIN DESTROY METHOD");	
+	}
+
+	public void setUsername(String username)
+	{
 		this.username = username;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
+	
+	public void setPassword(String password)
+	{
 		this.password = password;
 	}
-	private String password;
+	
+	public String getPassword()
+	{
+		return password;
+	}
+	
+	public String getUsername()
+	{
+		return username;
+	}
 }

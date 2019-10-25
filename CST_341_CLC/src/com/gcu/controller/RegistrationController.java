@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gcu.data.DataService;
 import com.gcu.model.User;
 
 @Controller
@@ -48,48 +49,14 @@ public class RegistrationController {
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	public String showcaseRegistartionDB(@ModelAttribute("user") @Validated User user, BindingResult binding, Model model)
 	{
+		DataService testing = new DataService();
 		if(binding.hasErrors())
 		{
 			return "registerUser";
 		}
-		//This checks if we have the right class for the Derby DB.
-		try {
-			Class.forName("org.apache.derby.jdbc.ClientDriver");
-			System.out.println("Passed first exception");
-		}
-		catch(ClassNotFoundException e){
-			System.out.println("Failed first exception");
-		}
-		//DO NOT CHANGE THESE STRINGS!!!
-		String url = "jdbc:derby://localhost:1527/MusicManagementCLC";
-		String uName = "user";
-		String password = "clcmusic";
-		//USE A DIFFERENT STRING TO RETURN A DIFFERENT PAGE WHEN THE REGISTARTION IS COMPLETE
-		String userDB = "login";
-		//Exception handling for inputting a user into the UserDB.
-		try {
-			Connection conn = DriverManager.getConnection(url, uName, password);
-			String firstName = user.getFirstName();
-			String lastName = user.getLastName();
-			String email = user.getEmailAddress();
-			int phone = user.getPhoneNumber();
-			String username = user.getUsername();
-			String userpass = user.getPassword();
-			String query = "INSERT INTO app.users (firstname, lastname, emailaddress, phonenumber, username, password) VALUES (?,?,?,?,?,?)";
-			PreparedStatement prepStatement = null;
-			prepStatement = conn.prepareStatement(query);
-			prepStatement.setString(1, firstName);
-			prepStatement.setString(2, lastName);
-			prepStatement.setString(3, email);
-			prepStatement.setInt(4, phone);
-			prepStatement.setString(5, username);
-			prepStatement.setString(6, userpass);
-			prepStatement.executeUpdate();
-			conn.close();
-		} catch (SQLException e) {
-			System.out.println("Failed");
-			e.printStackTrace();
-		}
+		testing.createUser(user);
+		String userDB;
+		userDB = "login";
 		return userDB;
 	}
 }

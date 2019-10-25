@@ -1,6 +1,8 @@
 package com.gcu.model;
 
-public class User {
+import com.gcu.business.RegistrationInterface;
+
+public class User implements RegistrationInterface{
 
 	private String firstName;
 	public String getFirstName() {
@@ -39,6 +41,18 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public void init()
+	{
+		System.out.println("User INIT method!");
+	}
+	
+	public void destroy()
+	{
+		System.out.println("User DESTROY method!");
+	}
+			
+	
 	private String lastName;
 	private String emailAddress;
 	private int phoneNumber;
